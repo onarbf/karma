@@ -22,25 +22,37 @@ class ErrorHandler extends Error {
   }
 }
 
-const handleError = (err, res) => {
+const handleError = (err, res) => {;
 let { statusCode, errors = [] } = err;
 // errors.title is a field sent by mongoose errors
   if (!errors.title) {
-    res.json({
-      status: "error",
-      statusCode: statusCode || 404,
-      errors
-    });
+    if (err.message) {
+      //err.message is a typical common err structure, we create this to add error to the array
+      res.json({
+        status: "error",
+        statusCode: statusCode || 404,
+        errors : [{
+          message: err.message || err.msg
+        }],
+      });
+    }else{
+      res.json({
+        status: "error",
+        statusCode: statusCode || 404,
+        errors,
+      });
+    }
+
   }else{
     res.json({
       status: "error",
       statusCode: 404,
       errors: [{
         message: 'Bad mongoose input',
-        errors: errors.title
-      }]
+        errors: errors.title,
+      }],
+      err
     });
-
   }
 
 };

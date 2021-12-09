@@ -2,59 +2,35 @@
 require('dotenv').config()
 
 const express = require('express');
-const {graphqlHTTP} = require('express-graphql');
-const {buildSchema} = require('graphql');
 const helmet = require('helmet');
 const db = require('./models/db');
 const { validationResult } = require('express-validator');
 const {ErrorHandler, handleError} = require('./helpers/error-handler/error');
-const _todo = require('./models/todo');
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
 // Create Express app
 const server = express()
+//  ENV variables
+const port = process.env.DEV_PORT || process.env.PORT
+const domain = process.env.DEV_DOMAIN || process.env.DOMAIN
+const corsOptions = {origin: `${domain}:${port}`};
+
+const routes = require('./routes');
 
 // Basic security
-// server.use(helmet());
+server.use(helmet());
 
-const port = process.env.DEV_PORT || process.env.PORT
+server.use(cors(corsOptions));
 
-server.get('/',async (req, res, next) =>{
-  try {
-    res.send('index')
+// parse requests of content-type - application/json
+server.use(bodyParser.json());
 
-  } catch (err) {
-    next(err, res)
+// parse requests of content-type - application/x-www-form-urlencoded
+server.use(bodyParser.urlencoded({ extended: true }));
 
-  }
-})
-
-server.get('/getLastTodo',async (req, res, next) =>{
-
-  try {
-    const todo = await _todo.getLastCreatedTodo();
-    res.json(todo);
-
-  } catch (err) {
-    next(err, res)
-  }
-
-})
-
-server.get('/createTodo/:title?',_todo.validate('createTodo'), async (req, res, next) =>{
-  try {
-    const newTodo = await _todo.createTodo(req,res,next);
-    res.json(newTodo)
-  } catch (err) {
-    next(err, res);
-  }
-})
-
-server.get('*', (req,res,next) => {
-  try {
-    res.redirect('/')
-  } catch (err) {
-    next(err, res)
-  }
-});
+//router handler
+server.use('/',routes)
 
 server.use((err, req, res, next) => {
   handleError(err, res);

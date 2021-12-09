@@ -29,7 +29,7 @@ const getLastCreatedTodo = (async ()=>{
 	return await Todo.findOne().sort('-meta.createdAt');
 })
 
-validate = (method) => {
+const validate = (method) => {
   switch (method) {
     case 'createTodo': {
      return [
