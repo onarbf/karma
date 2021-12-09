@@ -16,15 +16,27 @@ const server = express()
 // server.use(helmet());
 
 const port = process.env.DEV_PORT || process.env.PORT
-// A sample route
 
-server.get('/getTodo',async (req, res, next) =>{
+server.get('/',async (req, res, next) =>{
+  try {
+    res.send('index')
+
+  } catch (err) {
+    next(err, res)
+
+  }
+})
+
+server.get('/getLastTodo',async (req, res, next) =>{
+
   try {
     const todo = await _todo.getLastCreatedTodo();
     res.json(todo);
-  } catch (e) {
-    throw new ErrorHandler(500,e.message)
+
+  } catch (err) {
+    next(err, res)
   }
+
 })
 
 server.get('/createTodo/:title?',_todo.validate('createTodo'), async (req, res, next) =>{
@@ -32,17 +44,21 @@ server.get('/createTodo/:title?',_todo.validate('createTodo'), async (req, res, 
     const newTodo = await _todo.createTodo(req,res,next);
     res.json(newTodo)
   } catch (err) {
-    next(err  ,res);
+    next(err, res);
   }
 })
 
-server.get('/error', (req, res) => {
-  throw new ErrorHandler(500, 'Internal server error');
-})
+server.get('*', (req,res,next) => {
+  try {
+    res.redirect('/')
+  } catch (err) {
+    next(err, res)
+  }
+});
 
 server.use((err, req, res, next) => {
   handleError(err, res);
 });
 
 // Start the Express server
-server.listen(port, () => console.log(`Server running on port ${port}`))
+server.listen(port, () => console.log(`Server running on port ${port} and ${process.env.NODE_ENV} environment`))

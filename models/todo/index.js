@@ -8,7 +8,8 @@ const createTodo = async (req,res,next)=>{
 		const errors = validationResult(req); // Finds the validation errors in this request and wraps them in an object with handy functions
 
       if (!errors.isEmpty()) {
-        res.status(422).json({ errors: errors.array() });
+        // res.status(422).json({ errors: errors.array() });
+				throw new ErrorHandler(404,errors.array());
         return;
       }
 		const {title} = req.params
@@ -18,7 +19,8 @@ const createTodo = async (req,res,next)=>{
 		return await todo.save()
 
 	} catch (err) {
-		next(err)
+		console.log('working');
+		next(err, res)
 	}
 
 }
@@ -31,12 +33,14 @@ validate = (method) => {
   switch (method) {
     case 'createTodo': {
      return [
-        param('title', 'Partnerid field must be 5 character long ').isLength({ min: 5, max:5 })
+        param('title', 'Partnerid field must be 5 character long ').isLength({ min: 2, max:200 }),
+				param('title', 'The title is empty').exists(),
+				//SANITIZERS
+				param('title').trim().escape()
        ]
     }
   }
 }
-
 
 module.exports = {
   createTodo,
