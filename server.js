@@ -2,10 +2,15 @@
 require('dotenv').config()
 
 const express = require('express');
+const path = require('path');
 const helmet = require('helmet');
 const db = require('./models/db');
 const { validationResult } = require('express-validator');
+
 const {ErrorHandler, handleError} = require('./helpers/error-handler/error');
+const {validateJWT} = require('./helpers/jwt');
+const { rateLimiterUsingThirdParty } =  require('./helpers/rateLimiter');
+
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -28,6 +33,13 @@ server.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 server.use(bodyParser.urlencoded({ extended: true }));
+
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
+
+server.use(validateJWT);
+server.use(rateLimiterUsingThirdParty);
+server.use(express.static(path.join(__dirname,'client/build')));
 
 //router handler
 server.use('/',routes)

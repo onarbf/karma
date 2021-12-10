@@ -1,4 +1,6 @@
 var express = require('express');
+const path = require('path');
+
 var userRoutes = require('./userRoutes');
 var todoRoutes = require('./todoRoutes');
 
@@ -11,8 +13,10 @@ router.use('/todo',todoRoutes)
 
 
 router.get('/',async (req, res, next) =>{
+
   try {
-    res.json({ message: "Welcome to bezkoder application." });
+    res.json(req.user);
+    // res.json({ message: "Welcome to bezkoder application." });
   } catch (err) {
     next(err, res)
 
@@ -22,7 +26,7 @@ router.get('/',async (req, res, next) =>{
 
 router.get('*', (req,res,next) => {
   try {
-    res.redirect('/')
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
   } catch (err) {
     next(err, res)
   }
