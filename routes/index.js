@@ -6,23 +6,8 @@ var todoRoutes = require('./todoRoutes');
 
 var router = express.Router();
 
-
-
 router.use('/user',userRoutes);
 router.use('/todo',todoRoutes)
-
-
-router.get('/',async (req, res, next) =>{
-
-  try {
-    res.json(req.user);
-    // res.json({ message: "Welcome to bezkoder application." });
-  } catch (err) {
-    next(err, res)
-
-  }
-
-})
 
 router.get('*', (req,res,next) => {
   try {
