@@ -25,6 +25,7 @@ class ErrorHandler extends Error {
 const handleError = (err, res) => {;
 let { statusCode, errors = [] } = err;
 // errors.title is a field sent by mongoose errors
+console.log(err);
   if (!errors.title) {
     if (err.message) {
       //err.message is a typical common err structure, we create this to add error to the array
