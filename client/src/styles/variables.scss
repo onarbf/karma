@@ -5,6 +5,13 @@ $dark-color-3: #666666;
 $dark-color-4: #999999;
 $dark-color-5: #CCCCCC;
 
+$primary-color-1: #EABCFF;
+$primary-color-2: #D47AFF;
+$primary-color-3: #BE35FF;
+$primary-color-4: #7E23A8;
+$primary-color-5: #3F1254;
+
+
 $white: white;
 
 
@@ -22,7 +29,9 @@ $breakpoint-1: 30rem;
 
 //shadows
 
-@mixin shadow{
+@mixin box{
+  padding: calc($p-1*9);
+  border-radius: calc($p-1*2);
   -webkit-box-shadow: 0px 12px 27px 3px rgba(0,0,0,0.15);
   box-shadow: 0px 12px 27px 3px rgba(0,0,0,0.15);
 }

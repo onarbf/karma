@@ -1,0 +1,10 @@
+@import '../../styles/variables.scss';
+
+.Home{
+  .content{
+    margin-top: calc($p-1*9);
+    @include box;
+  }
+  @media (max-width: $breakpoint-1) {
+  }
+}

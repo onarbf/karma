@@ -3,3 +3,27 @@
 @import 'variables';
 @import 'normalize';
 @import 'spaces';
+
+body{
+  max-width: 80%;
+  margin: 0 auto;
+  padding-top: calc($p-1*9);
+  font-family: $main-font, sans-serif;
+  color: $dark-color-2;
+  @media (max-width: $breakpoint-1) {
+    max-width: 90%;
+  }
+}
+
+a{
+  text-decoration: none;
+  color: $primary-color-4;
+}
+
+a:hover{
+  text-decoration: underline;
+}
+
+h1{
+  font-size: 2.2rem;
+}
