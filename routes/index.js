@@ -11,7 +11,7 @@ router.use('/todo',todoRoutes)
 
 router.get('*', (req,res,next) => {
   try {
-    res.sendFile(path.join(__dirname,'/client/build/index.html'));
+    res.sendFile(path.join(__dirname,'../client/build/index.html'));
   } catch (err) {
     next(err, res)
   }
