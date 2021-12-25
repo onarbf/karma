@@ -37,10 +37,12 @@ server.use(bodyParser.json());
 
 server.use(validateJWT);
 server.use(rateLimiterUsingThirdParty);
+
 server.use(express.static(path.join(__dirname,'client/build')));
 
+
 //router handler
-server.use('/',routes)
+server.use('/api',routes)
 
 server.use((err, req, res, next) => {
   handleError(err, res);

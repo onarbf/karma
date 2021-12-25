@@ -15,7 +15,6 @@ router.get('/createUser/', async (req, res, next) =>{
 
 router.get('/loginUser/', async (req, res, next) =>{
   console.log('req.body:',req.body);
-
   try {
     const loggedUser = await _user.loginUser(req,res,next);
 

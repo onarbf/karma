@@ -10,6 +10,7 @@ const validateJWT = function(req, res, next) {
     });
   } else {
     req.user = undefined;
+    console.log('undefined user');
     next();
   }
 }
