@@ -40,7 +40,7 @@ server.use(rateLimiterUsingThirdParty);
 server.use(express.static(path.join(__dirname,'client/build')));
 
 //router handler
-server.use('/api',routes)
+server.use('/',routes)
 
 server.use((err, req, res, next) => {
   handleError(err, res);
