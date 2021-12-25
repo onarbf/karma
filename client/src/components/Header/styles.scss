@@ -1,0 +1,16 @@
+@import '../../styles/variables.scss';
+
+.Header{
+  padding: calc($p-1*9);
+  border-radius: calc($p-1*2);
+  @include shadow;
+
+  h1{
+    font-size: 2.2rem;
+    font-weight: bold;
+  }
+  h2{
+   font-size: 1.8rem;
+   margin-top: calc($p-1*3);
+  }
+}

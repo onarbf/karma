@@ -33,8 +33,6 @@ server.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 server.use(bodyParser.urlencoded({ extended: true }));
-
-server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 server.use(validateJWT);
@@ -42,7 +40,7 @@ server.use(rateLimiterUsingThirdParty);
 server.use(express.static(path.join(__dirname,'client/build')));
 
 //router handler
-server.use('/',routes)
+server.use('/api',routes)
 
 server.use((err, req, res, next) => {
   handleError(err, res);

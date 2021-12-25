@@ -1,11 +1,11 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import Button from 'react-bootstrap/Button';
+
+import Header from '../Header';
 
 function App() {
   return (
     <div className="App">
-      <h1>Karma</h1>
+      <Header/>
     </div>
   );
 }
