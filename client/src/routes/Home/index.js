@@ -5,13 +5,13 @@ import Header from '../../components/Header';
 import {setGlobalState, useGlobalState} from '../../state';
 
 function Home(){
-  const getHi = () => {
-    fetch('/api/hi')
-      .then(res => res.json())
-      .then(hi => setGlobalState('hi',hi.response));
+  const getHi = async () => {
+    const response = await fetch('/api/hi')
+      const hi = await response.json();
+      setGlobalState('hi',hi.response);
   }
   const [hi] = useGlobalState('hi')
-  
+
   return (
     <div className="Home">
       <Header/>

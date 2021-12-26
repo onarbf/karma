@@ -1,4 +1,4 @@
-import './styles.scss';
+import './_.scss';
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -9,6 +9,7 @@ function Header() {
       <div className="menu">
         <Link to="/" >Home</Link>
         <Link to="/login">Login</Link>
+        <Link to="/signin">Signin</Link>
       </div>
     </div>
   );

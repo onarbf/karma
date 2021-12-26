@@ -10,12 +10,14 @@ import {
 
 import Home from './routes/Home';
 import Login from './routes/Login';
+import Signin  from './routes/Signin';
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={ <Home />} />
-      <Route path="login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signin" element={<Signin />} />
       <Route path="*" element={ <Home />} />
     </Routes>
   </BrowserRouter>,
