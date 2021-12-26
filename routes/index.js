@@ -10,7 +10,7 @@ router.use('/user',userRoutes);
 router.use('/todo',todoRoutes)
 
 router.get('/hi', async (req, res, next) =>{
-  res.send('hi!');
+  res.json({response: 'hi!'});
 })
 
 router.get('*', (req,res,next) => {
