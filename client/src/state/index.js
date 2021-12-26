@@ -6,7 +6,8 @@ const {setGlobalState, useGlobalState} = createGlobalState({
     password: "",
     email: ""
   },
-  errors: []
+  errors: [],
+  res: {}
 })
 
 

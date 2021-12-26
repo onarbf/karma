@@ -44,7 +44,7 @@ const loginUser = async (req,res,next)=>{
         console.log('wtf');
         throw new ErrorHandler(401,{ message: 'Authentication failed. Invalid user or password.' });
       }
-      return { token: jwt.sign({ email: user.email, fullName: user.fullName, _id: user._id },process.env.BCRYPT_SECRET)};
+      return { token: jwt.sign({ email: user.email, username: user.username, _id: user._id },process.env.BCRYPT_SECRET)};
 	} catch (err) {
     next(err, res)
 	}

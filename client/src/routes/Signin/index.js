@@ -6,25 +6,32 @@ import {setGlobalState, useGlobalState} from '../../state';
 function Signin(){
 
   const [signinState] = useGlobalState("signinState");
+  const [res] = useGlobalState("res");
 
   const handleChange = (e)=>{
     signinState[e.target.name] = e.target.value;
     setGlobalState("signinState",signinState);
+
   }
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    console.log('working');
-    const response = await fetch('/api/user/createUser',
+
+    let response = await fetch('/api/user/createUser',
     {
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         username: signinState.username,
         password: signinState.password,
         email: signinState.email
       })
     })
-    console.log(await response.json());
+    response = await response.json();
+    setGlobalState("res", response);
   }
   return(
     <div className="Home">
