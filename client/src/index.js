@@ -11,6 +11,7 @@ import {
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Signin  from './routes/Signin';
+import AlertWrapper from './components/AlertWrapper';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -20,6 +21,7 @@ ReactDOM.render(
       <Route path="/signin" element={<Signin />} />
       <Route path="*" element={ <Home />} />
     </Routes>
+    <AlertWrapper/>
   </BrowserRouter>,
   document.getElementById('root')
 );

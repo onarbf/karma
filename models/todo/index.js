@@ -1,6 +1,6 @@
 const Todo = require("./todoSchema.js")
 const { body, param, validationResult } = require('express-validator');
-const {ErrorHandler} = require('../../helpers/error-handler/error');
+// const {ErrorHandler} = require('../../helpers/error-handler/error');
 
 const createTodo = async (req,res,next)=>{
 	try {
@@ -9,7 +9,7 @@ const createTodo = async (req,res,next)=>{
 
       if (!errors.isEmpty()) {
         // res.status(422).json({ errors: errors.array() });
-				throw new ErrorHandler(404,errors.array());
+				// throw new ErrorHandler(404,errors.array());
         return;
       }
 		const {title} = req.params

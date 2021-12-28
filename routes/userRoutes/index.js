@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
 const _user = require('../../models/user');
 
-router.post('/createUser/', async (req, res, next) =>{
-  console.log('working');
-  console.log('req.body:',req.body);
+// main route to create user. All the request has the same structure. All the code is clean. First, the sanitizers and validators middleware, abstracted to the _user object. Second, a try catch wrapper that holds the server logic.
+router.post('/createUser/',_user.userValidation.userSigninValidation,
+async (req, res, next) =>{
   try {
     const newUser = await _user.createUser(req,res,next);
     res.json(newUser);
@@ -14,11 +13,12 @@ router.post('/createUser/', async (req, res, next) =>{
   }
 })
 
-router.get('/loginUser/', async (req, res, next) =>{
-  console.log('req.body:',req.body);
+
+// same for the login functionality
+router.post('/loginUser/',_user.userValidation.userLoginValidation,
+async (req, res, next) =>{
   try {
     const loggedUser = await _user.loginUser(req,res,next);
-
     res.json(loggedUser);
   } catch (err) {
     next(err, res);

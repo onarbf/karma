@@ -65,3 +65,13 @@ button{
 button:focus{
   background-color: $primary-color-4;
 }
+
+
+//Colours
+.success{
+  background-color: $positive-color-3 !important;
+}
+
+.error{
+  background-color: $negative-color-3 !important;
+}

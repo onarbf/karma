@@ -16,6 +16,7 @@ const cors = require("cors");
 
 // Create Express app
 const server = express()
+
 //  ENV variables
 const port = process.env.DEV_PORT || process.env.PORT
 const domain = process.env.DEV_DOMAIN || process.env.DOMAIN
@@ -23,10 +24,8 @@ const domain = process.env.DEV_DOMAIN || process.env.DOMAIN
 
 const routes = require('./routes');
 
-// Basic security
+// basic security. It doesn't work properly with the same server architecture, so it's disabled.
 // server.use(helmet());
-
-// server.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 server.use(bodyParser.json());
@@ -35,15 +34,19 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
-server.use(validateJWT);
-server.use(rateLimiterUsingThirdParty);
-
+// it defines the public folder, where are all the static files and the react build
 server.use(express.static(path.join(__dirname,'client/build')));
 
+//rate limiter. Is not configured yet, just by default
+server.use(rateLimiterUsingThirdParty);
+
+// It takes all the request and check if there is some JSON web token. The root of the auth. Read more inside of the folder.
+server.use(validateJWT);
 
 //router handler
 server.use('/api',routes)
 
+//error handler.
 server.use((err, req, res, next) => {
   handleError(err, res);
 });

@@ -1,17 +1,15 @@
 import Header from '../../components/Header';
-import ErrorWrapper from '../../components/ErrorWrapper';
 
-import {setGlobalState, useGlobalState} from '../../state';
+
+import {setGlobalState, useGlobalState, initialState} from '../../state';
 
 function Signin(){
 
   const [signinState] = useGlobalState("signinState");
-  const [res] = useGlobalState("res");
-
   const handleChange = (e)=>{
     signinState[e.target.name] = e.target.value;
     setGlobalState("signinState",signinState);
-
+    console.log(signinState);
   }
 
   const handleSubmit = async (e)=>{
@@ -27,16 +25,22 @@ function Signin(){
       body: JSON.stringify({
         username: signinState.username,
         password: signinState.password,
+        password2: signinState.password2,
         email: signinState.email
       })
     })
     response = await response.json();
-    setGlobalState("res", response);
+
+    if (response.status !== "error") {
+        window.location = '/';
+        setGlobalState("successAlert",{message:"User created!"});
+        setGlobalState("signinState", initialState.signinState);
+    }
+    setGlobalState("res",response);
   }
   return(
     <div className="Home">
       <Header/>
-      <ErrorWrapper/>
       <div className="content">
         <h1>Signin</h1>
         <form>
@@ -46,6 +50,8 @@ function Signin(){
           <input type="text" onChange={handleChange} name="email" placeholder="introduce your Email..."></input>
           <p>Password</p>
           <input type="password"  onChange={handleChange} name="password" placeholder="Introduce your password"></input>
+          <p>Repeat password</p>
+          <input type="password"  onChange={handleChange} name="password2" placeholder="Repeat your password"></input>
           <button type="submit" onClick={handleSubmit}>Send</button>
         </form>
       </div>
