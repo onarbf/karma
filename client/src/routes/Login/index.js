@@ -1,10 +1,10 @@
 import Header from '../../components/Header';
-import {setGlobalState, useGlobalState, initialState} from '../../state';
+import { Link } from "react-router-dom";
+import {setGlobalState, useGlobalState} from '../../state';
 
 function Login(){
 
   const [loginState] = useGlobalState("loginState");
-  const [res] = useGlobalState("res");
 
   const handleChange = (e)=>{
     loginState[e.target.name] = e.target.value;
@@ -32,7 +32,6 @@ function Login(){
     if (response.status !== "error") {
         window.location = '/';
         setGlobalState("successAlert",{message:"User logged!"});
-        setGlobalState("loginState", initialState.loginState);
     }
     setGlobalState("res",response);
   }
@@ -46,9 +45,10 @@ function Login(){
           <p>Email</p>
           <input type="text" name="email" onChange={handleChange} placeholder="introduce your email..."></input>
           <p>Password</p>
-          <input type="password" placeholder="introduce your password"></input>
+          <input type="password" name="password" onChange={handleChange} placeholder="introduce your password"></input>
           <button type="submit" onClick={handleSubmit}>Send</button>
         </form>
+        <Link to="/recoverPassword">¿You don't remember your password?</Link>
       </div>
     </div>
   )

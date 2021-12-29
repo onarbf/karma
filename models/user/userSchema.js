@@ -17,9 +17,18 @@ let userSchema = new Schema({
   hash_password: {
     type: String
   },
-  created: {
-    type: Date,
-    default: Date.now
+  meta:{
+    createdAt: {
+      type: Date,
+      required: true,
+      default: Date.now
+    },
+    //the type of account. 1 is registered, but not email confirmed
+    accountPrivilege: {
+      type: Number,
+      required: true,
+      default: 1
+    }
   }
 });
 

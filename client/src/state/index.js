@@ -12,6 +12,9 @@ const initialState = {
     email: "",
     password: ""
   },
+  recoverPasswordState:{
+    email: ""
+  },
   errors: [],
   successAlert: false,
   res: {}

@@ -1,21 +1,30 @@
 var {check} = require('express-validator');
+const {HandleError} = require('../../helpers/error-handler/error');
 
-const emailValidation = check('email').trim().escape().isLength({min:4, max:32}).withMessage('The email field is empty')
+
+const emailValidation = check('email').trim().escape().isEmail().withMessage('You need to provide an email');
+const usernameValidation = check('username').trim().escape().isLength({min:4, max:32});
+
+const passwordValidation = check('password').isLength({min:1}).withMessage('The password field is empty');
+
+//It compares the two passwords when it's needed
+const passwordComparation =  check('password').isLength({min:1}).withMessage('The password field is empty').custom(async (confirmPassword, {req}) => {
+    const password = req.body.password2;
+    if(password !== confirmPassword){
+      throw new HandleError(401,"Passwords dont match");
+    }
+  })
 
 const userSigninValidation = [
-  check('username').trim().escape().isLength({min:4, max:32}).isEmail().withMessage('username is not an email'),
+  usernameValidation,
   emailValidation,
-  check('password').isLength({min:4, max:32}).custom(async (confirmPassword, {req}) => {
-      const password = req.body.password2;
-      if(password !== confirmPassword){
-        throw new Error("Password dont match");
-      }
-    })
+  passwordValidation,
+  passwordComparation
 ]
 
 const userLoginValidation = [
   emailValidation,
-  check('password').isLength({min:4, max:32}).withMessage('The password field is empty')
+  passwordValidation
 ]
 
 module.exports = {

@@ -11,7 +11,7 @@ router.get('/getLastTodo',async (req, res, next) =>{
     res.json(todo);
 
   } catch (err) {
-    next(err, res)
+    next(err)
   }
 
 })
@@ -21,7 +21,7 @@ router.get('/createTodo/:title?',_todo.validate('createTodo'), async (req, res, 
     const newTodo = await _todo.createTodo(req,res,next);
     res.json(newTodo)
   } catch (err) {
-    next(err, res);
+    next(err);
   }
 })
 
