@@ -1,5 +1,5 @@
 var {check} = require('express-validator');
-const {HandleError} = require('../../helpers/error-handler/error');
+const {ErrorHandler} = require('../../helpers/error-handler/error');
 
 
 const emailValidation = check('email').trim().escape().isEmail().withMessage('You need to provide an email');
@@ -11,7 +11,7 @@ const passwordValidation = check('password').isLength({min:1}).withMessage('The 
 const passwordComparation =  check('password').isLength({min:1}).withMessage('The password field is empty').custom(async (confirmPassword, {req}) => {
     const password = req.body.password2;
     if(password !== confirmPassword){
-      throw new HandleError(401,"Passwords dont match");
+      throw new ErrorHandler(401,"Passwords dont match");
     }
   })
 
