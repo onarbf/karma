@@ -12,6 +12,7 @@ let userSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
+    
     required: true
   },
   hash_password: {
