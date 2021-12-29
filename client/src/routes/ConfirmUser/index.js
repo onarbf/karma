@@ -25,7 +25,7 @@ function ConfirmUser(){
           window.location = "/login"
         },3000)
     }
-    setGlobalState("res",response);
+    setGlobalState("res",{...response});
 
   },[]);
 

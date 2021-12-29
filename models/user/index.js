@@ -70,6 +70,12 @@ const loginUser = async (req,res,next)=>{
 }
 
 const confirmUser = async (req,res,next)=>{
+  const errors = validationResult(req); // Finds the validation errors in this request and wraps them in an object with handy functions
+
+  if (!errors.isEmpty()) {
+
+    throw new ErrorHandler(404,errors.array());
+  }
   const token = await Token.findOne({code: req.params.token});
   const user = await User.findOne({_id: req.params.userId});
   //This token shouldn't expire
@@ -109,9 +115,26 @@ const recoverPassword = async function(req, res, next) {
     //saving the token
     const savedToken = await token.save();
 
-    sendEmail(user.email,"Karma | Recover your password",`Click here to recover your password: <a href="${process.env.SERVER_DOMAIN}/recoverPassword?userId=${user._id}?token=${token.code}">Recover your password</a>`);
+    sendEmail(user.email,"Karma | Recover your password",`Click here to recover your password: <a href="${process.env.SERVER_DOMAIN}/recoverPassword?userId=${user._id}&token=${token.code}">${process.env.SERVER_DOMAIN}/recoverPassword?userId=${user._id}&token=${token.code}</a>`);
     return true;
 };
+
+const recoverPassword2 = async function(req, res, next) {
+  console.log('working');
+  const token = await Token.findOne({code: req.params.token});
+  const user = await User.findOne({_id: req.params.userId});
+
+  if (token.meta.expirationAt < Date.now()) {
+    throw new ErrorHandler(401,{ message: 'Sorry, but your token has expired. Recover your password to re-authenticate your account' });
+  }
+
+  if (token.userId != user._id.toString()) {
+    throw new ErrorHandler(401,{ message: "Something went wrong on token validation" });
+  }
+
+  return true;
+};
+
 
 
 module.exports = {
@@ -120,5 +143,6 @@ module.exports = {
   confirmUser,
   loginRequired,
   recoverPassword,
+  recoverPassword2,
   userValidation
 }

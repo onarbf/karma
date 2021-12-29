@@ -1,7 +1,7 @@
 import './_.scss';
 import Header from '../../components/Header';
 import { Link } from "react-router-dom";
-import {setGlobalState, useGlobalState} from '../../state';
+import {setGlobalState, useGlobalState, initialState} from '../../state';
 
 function Login(){
 
@@ -30,6 +30,7 @@ function Login(){
 
     if (response.status !== "error") {
         setGlobalState("successAlert",{message:"User logged!"});
+        setGlobalState("loginState",{ ...initialState.loginState});
         setTimeout(()=>{
           window.location = '/'
         },3000)

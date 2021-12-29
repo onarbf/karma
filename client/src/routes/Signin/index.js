@@ -32,7 +32,7 @@ function Signin(){
     response = await response.json();
 
     if (response.status !== "error") {
-        setGlobalState("signinState", initialState.signinState);
+        setGlobalState("signinState", {...initialState.signinState});
         setGlobalState("successAlert",{message:"User created! Check your email"});
 
         setTimeout(()=>{

@@ -23,10 +23,6 @@ let tokenSchema = new Schema({
       type: Date,
       //It expires after 1 day
       default: () => Date.now() + (1*24*60*60*1000)
-    },
-    isConsumed:{
-      type: Boolean,
-      default: false
     }
   }
 });

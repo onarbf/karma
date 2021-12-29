@@ -13,6 +13,7 @@ function RecoverPassword(){
   useEffect(async () => {
     const userId = searchParams.get("userId")
     const token =  searchParams.get("token")
+    console.log('recoverPasswordState', await recoverPasswordState.tokenIsTrue);
     let response = await fetch(`api/user/recoverPassword2/${userId}/${token}`,{
       method: 'GET',
       headers: {
@@ -20,14 +21,15 @@ function RecoverPassword(){
         'Content-Type': 'application/json'
       }})
     response = await response.json();
+    console.log(response);
     if (response.status != "error") {
       recoverPasswordState.tokenIsTrue = true;
-      setGlobalState("recoverPasswordState",recoverPasswordState);
+      console.log('working');
+      setGlobalState("recoverPasswordState",{...recoverPasswordState});
     }
-  })
+  },[])
 
   const RenderForm = ()=>{
-
     const emailForm = (<form>
         <p>Introduce the email that you used to register</p>
         <input type="text" name="email" onChange={handleChange} placeholder="introduce your email..."></input>
@@ -35,8 +37,8 @@ function RecoverPassword(){
       </form>)
     const passwordForm = (<form>
         <p>Introduce the new password</p>
-        <input type="text" name="password" onChange={handleChange} placeholder="introduce your email..."></input>
-        <input type="text" name="password2" onChange={handleChange} placeholder="introduce your email..."></input>
+        <input type="text" name="password" onChange={handleChange} placeholder="Introduce the new password"></input>
+        <input type="text" name="password2" onChange={handleChange} placeholder="repeat password"></input>
         <button type="submit" onClick={handleSubmit}>Recover your password</button>
       </form>)
 
@@ -45,7 +47,7 @@ function RecoverPassword(){
 
   const handleChange = (e)=>{
     recoverPasswordState[e.target.name] = e.target.value;
-    setGlobalState("recoverPasswordState",recoverPasswordState);
+    setGlobalState("recoverPasswordState",{...recoverPasswordState});
     console.log(recoverPasswordState);
   }
 
@@ -69,7 +71,7 @@ function RecoverPassword(){
 
     if (response.status !== "error") {
       setGlobalState("successAlert",{message:"If an email exists, we send an email to recover your password."});
-      setGlobalState(recoverPasswordState,initialState.recoverPasswordState);
+      setGlobalState("recoverPasswordState",{...initialState.recoverPasswordState});
     }
 
     setGlobalState("res",response);

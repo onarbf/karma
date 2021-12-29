@@ -48,10 +48,12 @@ async (req, res, next) =>{
   }
 })
 
-router.get('/recoverPassword2',
+router.get('/recoverPassword2/:userId/:token',
 async (req, res, next) =>{
   try {
     console.log('hitted');
+    const recoverPassword2 = await _user.recoverPassword2(req,res,next);
+    res.json(recoverPassword2);
   } catch (err) {
     next(err);
   }
