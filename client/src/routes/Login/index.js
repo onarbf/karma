@@ -1,3 +1,4 @@
+import './_.scss';
 import Header from '../../components/Header';
 import { Link } from "react-router-dom";
 import {setGlobalState, useGlobalState} from '../../state';
@@ -9,12 +10,10 @@ function Login(){
   const handleChange = (e)=>{
     loginState[e.target.name] = e.target.value;
     setGlobalState("loginState",loginState);
-    console.log(loginState);
   }
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    console.log('wtf');
     let response = await fetch('/api/user/loginUser',
     {
       method: 'POST',
@@ -30,14 +29,16 @@ function Login(){
     response = await response.json();
 
     if (response.status !== "error") {
-        window.location = '/';
         setGlobalState("successAlert",{message:"User logged!"});
+        setTimeout(()=>{
+          window.location = '/'
+        },3000)
     }
     setGlobalState("res",response);
   }
 
   return(
-    <div className="Home">
+    <div className="Login">
       <Header/>
       <div className="content">
         <h1>Login</h1>

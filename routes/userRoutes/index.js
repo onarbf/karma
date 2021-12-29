@@ -27,7 +27,6 @@ async (req, res, next) =>{
   }
 })
 
-// same for the login functionality
 router.get('/confirmUser/:userId/:token',
 async (req, res, next) =>{
   try {
@@ -38,5 +37,24 @@ async (req, res, next) =>{
   }
 })
 
+router.post('/recoverPassword',
+async (req, res, next) =>{
+  try {
+    console.log('hitted');
+    const recoverPassword = await _user.recoverPassword(req,res,next);
+    res.json(recoverPassword);
+  } catch (err) {
+    next(err);
+  }
+})
+
+router.get('/recoverPassword2',
+async (req, res, next) =>{
+  try {
+    console.log('hitted');
+  } catch (err) {
+    next(err);
+  }
+})
 
 module.exports = router;

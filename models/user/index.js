@@ -44,9 +44,8 @@ const createUser = async (req,res,next)=>{
 
     //saving the token
     const savedToken = await token.save();
-    console.log(savedToken);
     //sending the confirmation email
-    sendEmail(user.email,"Karma | Email confirmation",`Click here to confirm your Karma account <a href="${process.env.SERVER_DOMAIN}/api/user/confirmUser/${user._id}/${token.code}">${process.env.SERVER_DOMAIN}/${user._id}/${token.code}</a>`);
+    sendEmail(user.email,"Karma | Email confirmation",`Click here to confirm your Karma account: <a href="${process.env.SERVER_DOMAIN}/confirmUser?userId=${user._id}?token=${token.code}">Confirm your account</a>`);
 
     return await user;
 }
@@ -71,18 +70,17 @@ const loginUser = async (req,res,next)=>{
 }
 
 const confirmUser = async (req,res,next)=>{
-
-  const token = await Token.findOne({token:req.params.token});
+  const token = await Token.findOne({code: req.params.token});
   const user = await User.findOne({_id: req.params.userId});
-  console.log("token:", token);
-  console.log("user:", user);
-  if (token.meta.expirationAt < Date.now()) {
-    throw new ErrorHandler(401,{ message: 'Sorry, but your token has expired. Recover your password to re-authenticate your account' });
-  }
-  if (token.userId != user._id) {
+  //This token shouldn't expire
+  // if (token.meta.expirationAt < Date.now()) {
+  //   throw new ErrorHandler(401,{ message: 'Sorry, but your token has expired. Recover your password to re-authenticate your account' });
+  // }
+  if (token.userId != user._id.toString()) {
     throw new ErrorHandler(401,{ message: "We couldn't confirm your account" });
   }
-  await User.findOneAndUpdate({_id: user._id, meta:{ accountPrivilege: 2}});
+  await User.findOneAndUpdate({_id: user._id},{meta:{ accountPrivilege: 2}});
+  await Token.deleteOne({_id: token._id});
   return true;
 }
 
@@ -94,10 +92,33 @@ const loginRequired = async function(req, res, next) {
     }
 };
 
+
+const recoverPassword = async function(req, res, next) {
+  console.log("req.body.email",req.body.email);
+    const user = await User.findOne({email: req.body.email});
+    console.log("user",user);
+    const token = new Token({
+      code: generator.generate({
+	       length: 10,
+	        numbers: true
+      }),
+      type: "recoverPassword",
+      userId: user._id
+    });
+    console.log("token",token);
+    //saving the token
+    const savedToken = await token.save();
+
+    sendEmail(user.email,"Karma | Recover your password",`Click here to recover your password: <a href="${process.env.SERVER_DOMAIN}/recoverPassword?userId=${user._id}?token=${token.code}">Recover your password</a>`);
+    return true;
+};
+
+
 module.exports = {
   createUser,
   loginUser,
   confirmUser,
   loginRequired,
+  recoverPassword,
   userValidation
 }

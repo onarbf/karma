@@ -1,3 +1,4 @@
+import './_.scss';
 import Header from '../../components/Header';
 
 
@@ -9,7 +10,6 @@ function Signin(){
   const handleChange = (e)=>{
     signinState[e.target.name] = e.target.value;
     setGlobalState("signinState",signinState);
-    console.log(signinState);
   }
 
   const handleSubmit = async (e)=>{
@@ -32,14 +32,17 @@ function Signin(){
     response = await response.json();
 
     if (response.status !== "error") {
-        window.location = '/';
-        setGlobalState("successAlert",{message:"User created!"});
         setGlobalState("signinState", initialState.signinState);
+        setGlobalState("successAlert",{message:"User created! Check your email"});
+
+        setTimeout(()=>{
+          window.location = '/'
+        },3000)
     }
     setGlobalState("res",response);
   }
   return(
-    <div className="Home">
+    <div className="Signin">
       <Header/>
       <div className="content">
         <h1>Signin</h1>
