@@ -15,6 +15,9 @@
 
   .menu{
     display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    min-height: 2rem;
     padding-top: calc($p-1*9);
     font-size: 1.2rem;
     a {
