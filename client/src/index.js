@@ -3,7 +3,7 @@ import './styles/index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route
 } from "react-router-dom";
@@ -16,7 +16,7 @@ import Signin  from './routes/Signin';
 import AlertWrapper from './components/AlertWrapper';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouterRouter>
     <Routes>
       <Route path="/" element={ <Home />} />
       <Route path="/login" element={<Login />} />
@@ -26,6 +26,6 @@ ReactDOM.render(
       <Route path="*" element={ <Home />} />
     </Routes>
     <AlertWrapper/>
-  </BrowserRouter>,
+  </HashRouter>,
   document.getElementById('root')
 );
