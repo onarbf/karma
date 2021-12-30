@@ -10,6 +10,7 @@ const generator = require('generate-password');
 
 const userValidation = require('./userValidations');
 const {ErrorHandler} = require('../../helpers/error-handler/error');
+const {checkJWT} = require('../../helpers//jwt');
 
 //A function who open the connection to the email server and prepare the email
 const {sendEmail} = require('../../helpers/mailer');
@@ -98,6 +99,18 @@ const loginRequired = async function(req, res, next) {
     }
 };
 
+const checkJWTToken = async function(req, res, next) {
+    try {
+      const isAuth = await checkJWT(req,res,next);
+      if (isAuth) {
+          return isAuth
+      }
+    } catch (err) {
+      next(err)
+    }
+};
+
+
 
 const recoverPassword = async function(req, res, next) {
   console.log("req.body.email",req.body.email);
@@ -171,5 +184,6 @@ module.exports = {
   recoverPassword,
   recoverPassword2,
   recoverPassword3,
+  checkJWTToken,
   userValidation
 }

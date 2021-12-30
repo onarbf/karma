@@ -15,6 +15,18 @@ const validateJWT = function(req, res, next) {
   }
 }
 
+// used manually to check if the token provided works. Used if we want to see if someone is auth
+const checkJWT = async function(req, res, next) {
+  let isAuth = false;
+  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
+    const isAuth = await jsonwebtoken.verify(req.headers.authorization.split(' ')[1],process.env.BCRYPT_SECRET);
+    if (isAuth) {
+      return true;
+    }
+  }
+}
+
 module.exports = {
-  validateJWT
+  validateJWT,
+  checkJWT
 }

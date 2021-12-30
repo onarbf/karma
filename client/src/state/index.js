@@ -20,6 +20,7 @@ const initialState = {
   },
   errors: [],
   successAlert: false,
+  isAuth: false,
   res: {}
 };
 const {setGlobalState, useGlobalState} = createGlobalState(initialState)

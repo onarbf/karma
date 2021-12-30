@@ -26,6 +26,18 @@ async (req, res, next) =>{
   }
 })
 
+// same for the login functionality
+router.get('/checkJWT',
+async (req, res, next) =>{
+  try {
+    const response = await _user.checkJWTToken(req,res,next);
+    res.json({status: "success", response});
+  } catch (err) {
+    next(err);
+  }
+})
+
+
 router.get('/confirmUser/:userId/:token',
 async (req, res, next) =>{
   try {

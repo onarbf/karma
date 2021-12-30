@@ -66,6 +66,16 @@ button:focus{
   background-color: $primary-color-4;
 }
 
+.link{
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0,0,0,0);
+  color: $primary-color-4;
+  font-weight: normal;
+}
+.link:focus{
+  background-color: rgba(0,0,0,0);
+}
 
 //Colours
 .success{

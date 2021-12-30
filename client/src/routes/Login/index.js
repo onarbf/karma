@@ -31,6 +31,9 @@ function Login(){
     if (response.status !== "error") {
         setGlobalState("successAlert",{message:"User logged!"});
         setGlobalState("loginState",{ ...initialState.loginState});
+
+        //Setting the json web token to add it on all the calls
+        localStorage.setItem('currentToken', `JWT ${response.response.token}`);
         setTimeout(()=>{
           window.location = '/'
         },3000)
