@@ -20,7 +20,7 @@ function ConfirmUser(){
       }})
     response = await response.json();
     if (response.status != "error") {
-        setGlobalState("successAlert", {message:"User created! Check your email"});
+        setGlobalState("successAlert", {message:"User confirmed! Check your email"});
         setTimeout(()=>{
           window.location = "/login"
         },3000)
