@@ -13,15 +13,5 @@ router.get('/hi', async (req, res, next) =>{
   res.json({status:"success",response: 'hi!'});
 })
 
-//All the rest of domains go to the react page.
-router.get('*', (req,res,next) => {
-  try {
-    res.sendFile(path.join(__dirname,'../client/build/index.html'));
-  } catch (err) {
-    next(err)
-  }
-});
-
-
 
 module.exports = router;

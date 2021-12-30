@@ -15,6 +15,7 @@ const passwordComparation =  check('password').isLength({min:1}).withMessage('Th
     }
   })
 
+
 const userSigninValidation = [
   usernameValidation,
   emailValidation,
