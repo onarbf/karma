@@ -49,7 +49,7 @@ server.use('/api',routes)
 //All the rest of domains go to the react page.
 server.get('*', (req,res,next) => {
   try {
-    res.sendFile(path.join(__dirname,'../client/build/index.html'));
+    res.sendFile(path.join(__dirname,'./client/build/index.html'));
   } catch (err) {
     next(err)
   }
