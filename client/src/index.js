@@ -16,7 +16,7 @@ import Signin  from './routes/Signin';
 import AlertWrapper from './components/AlertWrapper';
 
 ReactDOM.render(
-  <HashRouterRouter>
+  <HashRouter>
     <Routes>
       <Route path="/" element={ <Home />} />
       <Route path="/login" element={<Login />} />
