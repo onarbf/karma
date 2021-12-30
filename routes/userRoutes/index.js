@@ -7,9 +7,8 @@ const _user = require('../../models/user');
 router.post('/createUser/',_user.userValidation.userSigninValidation,
 async (req, res, next) =>{
   try {
-    const newUser = await _user.createUser(req,res,next);
-    res.json(newUser);
-
+    const response = await _user.createUser(req,res,next);
+    res.json({status: "success", response});
   } catch (err) {
     next(err);
   }
@@ -20,8 +19,8 @@ async (req, res, next) =>{
 router.post('/loginUser/',_user.userValidation.userLoginValidation,
 async (req, res, next) =>{
   try {
-    const loggedUser = await _user.loginUser(req,res,next);
-    res.json(loggedUser);
+    const response = await _user.loginUser(req,res,next);
+    res.json({status: "success", response});
   } catch (err) {
     next(err);
   }
@@ -30,19 +29,18 @@ async (req, res, next) =>{
 router.get('/confirmUser/:userId/:token',
 async (req, res, next) =>{
   try {
-    const confirmedUser = await _user.confirmUser(req,res,next);
-    res.json(confirmedUser);
+    const response = await _user.confirmUser(req,res,next);
+    res.json({status: "success", response});
   } catch (err) {
     next(err);
   }
 })
 
-router.post('/recoverPassword',
+router.post('/recoverPassword',_user.userValidation.recoverPasswordValidation,
 async (req, res, next) =>{
   try {
-    console.log('hitted');
-    const recoverPassword = await _user.recoverPassword(req,res,next);
-    res.json(recoverPassword);
+    const response = await _user.recoverPassword(req,res,next);
+    res.json({status: "success", response});
   } catch (err) {
     next(err);
   }
@@ -51,9 +49,19 @@ async (req, res, next) =>{
 router.get('/recoverPassword2/:userId/:token',
 async (req, res, next) =>{
   try {
-    console.log('hitted');
-    const recoverPassword2 = await _user.recoverPassword2(req,res,next);
-    res.json(recoverPassword2);
+    const response = await _user.recoverPassword2(req,res,next);
+    res.json({status: "success", response});
+  } catch (err) {
+    next(err);
+  }
+})
+
+router.post('/recoverPassword2/:userId/:token',_user.userValidation.recoverPassword2Validation,
+async (req, res, next) =>{
+  try {
+    console.log("1234");
+    const response = await _user.recoverPassword3(req,res,next);
+    res.json({status: "success", response});
   } catch (err) {
     next(err);
   }

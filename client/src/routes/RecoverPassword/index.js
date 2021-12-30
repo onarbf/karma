@@ -9,10 +9,11 @@ function RecoverPassword(){
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [recoverPasswordState] = useGlobalState("recoverPasswordState");
+  const userId = searchParams.get("userId")
+  const token =  searchParams.get("token")
 
   useEffect(async () => {
-    const userId = searchParams.get("userId")
-    const token =  searchParams.get("token")
+
     console.log('recoverPasswordState', await recoverPasswordState.tokenIsTrue);
     let response = await fetch(`api/user/recoverPassword2/${userId}/${token}`,{
       method: 'GET',
@@ -29,30 +30,13 @@ function RecoverPassword(){
     }
   },[])
 
-  const RenderForm = ()=>{
-    const emailForm = (<form>
-        <p>Introduce the email that you used to register</p>
-        <input type="text" name="email" onChange={handleChange} placeholder="introduce your email..."></input>
-        <button type="submit" onClick={handleSubmit}>Recover your password</button>
-      </form>)
-    const passwordForm = (<form>
-        <p>Introduce the new password</p>
-        <input type="text" name="password" onChange={handleChange} placeholder="Introduce the new password"></input>
-        <input type="text" name="password2" onChange={handleChange} placeholder="repeat password"></input>
-        <button type="submit" onClick={handleSubmit}>Recover your password</button>
-      </form>)
-
-      return recoverPasswordState.tokenIsTrue?passwordForm:emailForm;
-  }
-
   const handleChange = (e)=>{
     recoverPasswordState[e.target.name] = e.target.value;
-    setGlobalState("recoverPasswordState",{...recoverPasswordState});
+    setGlobalState("recoverPasswordState",recoverPasswordState);
     console.log(recoverPasswordState);
   }
 
-
-  const handleSubmit = async (e)=>{
+  const handleEmailSubmit = async (e)=>{
     e.preventDefault();
     console.log(recoverPasswordState.email);
     let response = await fetch('/api/user/recoverPassword',
@@ -76,6 +60,47 @@ function RecoverPassword(){
 
     setGlobalState("res",response);
   }
+
+  const handlePasswordSubmit = async (e)=>{
+    e.preventDefault();
+    console.log('12');
+    let response = await fetch(`api/user/recoverPassword2/${userId}/${token}`,{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    body: JSON.stringify({
+      password: recoverPasswordState.password,
+      password2: recoverPasswordState.password2
+    })})
+
+    response = await response.json();
+
+    if (response.status !== "error") {
+      setGlobalState("successAlert",{message:"Password recovered! That will be perfect"});
+      setGlobalState("recoverPasswordState",{...initialState.recoverPasswordState});
+    }
+
+    setGlobalState("res",response);
+  }
+
+  const RenderForm = ()=>{
+    const emailForm = (<div className="form">
+        <p>Introduce the email that you used to register</p>
+        <input key="input1" type="text" name="email" onChange={handleChange} placeholder="introduce your email..."></input>
+        <button type="submit" onClick={handleEmailSubmit}>Recover your password</button>
+      </div>)
+    const passwordForm = (<div className="form">
+        <p>Introduce the new password</p>
+        <input key="input2" type="password" name="password" onChange={handleChange} placeholder="Introduce the new password"></input>
+        <input key="input3" type="password" name="password2" onChange={handleChange} placeholder="repeat password"></input>
+        <button type="submit" onClick={handlePasswordSubmit}>Recover your password</button>
+      </div>)
+
+      return recoverPasswordState.tokenIsTrue?passwordForm:emailForm;
+  }
+
 
   return(
     <div className="RecoverPassword">

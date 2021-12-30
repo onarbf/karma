@@ -14,6 +14,8 @@ const initialState = {
   },
   recoverPasswordState:{
     email: "",
+    password: "",
+    password2: "",
     tokenIsTrue: false
   },
   errors: [],

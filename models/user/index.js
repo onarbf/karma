@@ -45,7 +45,7 @@ const createUser = async (req,res,next)=>{
     //saving the token
     const savedToken = await token.save();
     //sending the confirmation email
-    sendEmail(user.email,"Karma | Email confirmation",`Click here to confirm your Karma account: <a href="${process.env.SERVER_DOMAIN}/confirmUser?userId=${user._id}?token=${token.code}">Confirm your account</a>`);
+    sendEmail(user.email,"Karma | Email confirmation",`Click here to confirm your Karma account: <a href="${process.env.SERVER_DOMAIN}/confirmUser?userId=${user._id}&token=${token.code}">${process.env.SERVER_DOMAIN}/confirmUser?userId=${user._id}&token=${token.code}</a>`);
 
     return await user;
 }
@@ -135,6 +135,32 @@ const recoverPassword2 = async function(req, res, next) {
   return true;
 };
 
+const recoverPassword3 = async function(req, res, next) {
+  const errors = validationResult(req); // Finds the validation errors in this request and wraps them in an object with handy functions
+  console.log(req.body);
+  if (!errors.isEmpty()) {
+      throw new ErrorHandler(404,errors.array());
+  }
+
+  const token = await Token.findOne({code: req.params.token});
+  const user = await User.findOne({_id: req.params.userId});
+
+  if (token.meta.expirationAt < Date.now()) {
+    throw new ErrorHandler(401,{ message: 'Sorry, but your token has expired. Recover your password to re-authenticate your account' });
+  }
+
+  if (token.userId != user._id.toString()) {
+    throw new ErrorHandler(401,{ message: "Something went wrong on token validation" });
+  }
+  console.log("req.body.password",req.body.password);
+  const userSaved = await User.findOneAndUpdate({_id: user._id},{hash_password: bcrypt.hashSync(req.body.password, 10)});
+  if (userSaved) {
+    return true
+  }else{
+    throw new ErrorHandler(401,{ message: 'Something went wrong' });
+  }
+};
+
 
 
 module.exports = {
@@ -144,5 +170,6 @@ module.exports = {
   loginRequired,
   recoverPassword,
   recoverPassword2,
+  recoverPassword3,
   userValidation
 }

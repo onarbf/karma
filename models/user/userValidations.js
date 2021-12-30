@@ -27,7 +27,17 @@ const userLoginValidation = [
   passwordValidation
 ]
 
+const recoverPasswordValidation = [
+  emailValidation
+]
+
+const recoverPassword2Validation = [
+  passwordComparation
+]
+
 module.exports = {
   userSigninValidation,
-  userLoginValidation
+  userLoginValidation,
+  recoverPasswordValidation,
+  recoverPassword2Validation
 }
