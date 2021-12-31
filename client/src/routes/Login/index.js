@@ -1,11 +1,13 @@
 import './_.scss';
 import Header from '../../components/Header';
-import { Link } from "react-router-dom";
+
+import { Link, Navigate } from "react-router-dom";
 import {setGlobalState, useGlobalState, initialState} from '../../state';
 
 function Login(){
 
   const [loginState] = useGlobalState("loginState");
+  const [isAuth] = useGlobalState("isAuth");
 
   const handleChange = (e)=>{
     loginState[e.target.name] = e.target.value;
@@ -44,6 +46,7 @@ function Login(){
   return(
     <div className="Login">
       <Header/>
+      {isAuth && <Navigate to="/dashboard" />}
       <div className="content">
         <h1>Login</h1>
         <form>

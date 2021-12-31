@@ -99,6 +99,7 @@ const loginRequired = async function(req, res, next) {
     }
 };
 
+//it checks only one time if the user is logged
 const checkJWTToken = async function(req, res, next) {
     try {
       const isAuth = await checkJWT(req,res,next);
@@ -165,10 +166,11 @@ const recoverPassword3 = async function(req, res, next) {
   if (token.userId != user._id.toString()) {
     throw new ErrorHandler(401,{ message: "Something went wrong on token validation" });
   }
-  console.log("req.body.password",req.body.password);
+
   const userSaved = await User.findOneAndUpdate({_id: user._id},{hash_password: bcrypt.hashSync(req.body.password, 10)});
   if (userSaved) {
     return true
+    await Token.deleteOne({_id: token._id});
   }else{
     throw new ErrorHandler(401,{ message: 'Something went wrong' });
   }

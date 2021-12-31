@@ -34,13 +34,12 @@ function Header() {
 
   return (
     <div className="Header">
-      <h1>Karma App</h1>
+      <h1><Link to="/" >Karma App</Link></h1>
       <h2>Welcome to this beautiful app</h2>
       <div className="menu">
-        <Link to="/" >Home</Link>
-        <Link to="/dashboard" >Dashboard</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signin">Signin</Link>
+        {!isAuth && <Link to="/signin">Signin</Link>}
+        {!isAuth && <Link to="/login">Login</Link>}
+        {isAuth &&<Link to="/dashboard" >Dashboard</Link>}
         {isAuth && <button className="link" onClick={logout} to="/logout">Logout</button>}
       </div>
     </div>
