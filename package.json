@@ -1,5 +1,5 @@
 {
-  "name": "karma",
+  "name": "eustory",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "heroku-postbuild": "cd client && npm install && npm run build",
     "dev": "nodemon server.js"
   },
-  "author": "",
+  "author": "Onar Berrade Fernandez",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
